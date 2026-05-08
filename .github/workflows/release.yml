@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build plugin zip
+        run: |
+          SLUG="woo-tet-dimensional-shipping-plugin"
+          mkdir -p "build/$SLUG"
+          cp dimensional-shipping-plugin.php update-checker.php README.md CHANGELOG.md "build/$SLUG/"
+          cd build
+          zip -r "../$SLUG.zip" "$SLUG"
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: woo-tet-dimensional-shipping-plugin.zip
+          generate_release_notes: true

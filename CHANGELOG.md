@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.0] - 2026-05-08
+
+### Added
+- Self-hosted update checker (`update-checker.php`) — the plugin now checks `plugins.ttrp.gr` for new versions and surfaces them in the WordPress admin Updates screen.
+- GitHub Actions release workflow — pushing a `v*` tag builds a clean plugin zip and attaches it to a GitHub release automatically.
+
 ## [1.1.0] - 2026-04-17
 
 ### Fixed

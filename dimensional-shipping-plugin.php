@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Dimensional Shipping for WooCommerce
  * Description: Custom shipping method that calculates shipping cost based on product dimensions (L×W×H)/5000 in cm
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Michalis Tetteris
  * Author URI: https://ttrp.gr
  * Text Domain: dimensional-shipping
@@ -212,3 +212,7 @@ function dimensional_shipping_activate() {
     }
 }
 register_activation_hook(__FILE__, 'dimensional_shipping_activate');
+
+
+require_once plugin_dir_path( __FILE__ ) . 'update-checker.php';
+new TTRP_Update_Checker( __FILE__, 'woo-tet-dimensional-shipping-plugin' );
