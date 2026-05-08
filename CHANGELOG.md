@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.1] - 2026-05-08
+
+### Changed
+- Housekeeping: verified plugin header and documentation are consistent with WooCommerce title guidelines.
+
 ## [1.2.0] - 2026-05-08
 
 ### Added
