@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0] - 2026-05-12
+
+### Added
+- **ttrp.gr Plugins** top-level admin menu with a **Dimensional Shipping** submenu entry that links directly to **WooCommerce → Settings → Shipping**. The menu is shared across all ttrp.gr plugins — whichever plugin loads first registers it.
+
+---
+
 ## [1.2.1] - 2026-05-08
 
 ### Changed

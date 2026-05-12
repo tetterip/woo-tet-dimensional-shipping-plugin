@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Dimensional Shipping for WooCommerce
  * Description: Custom shipping method that calculates shipping cost based on product dimensions (L×W×H)/5000 in cm
- * Version: 1.2.1
+ * Version: 1.3.0
  * Author: Michalis Tetteris
  * Author URI: https://ttrp.gr
  * Text Domain: dimensional-shipping
@@ -213,6 +213,50 @@ function dimensional_shipping_activate() {
 }
 register_activation_hook(__FILE__, 'dimensional_shipping_activate');
 
+
+// ── ttrp.gr Plugins menu ─────────────────────────────────────────────────────
+function ttrp_ds_maybe_register_brand_menu(): void {
+    global $menu;
+    if ( is_array( $menu ) ) {
+        foreach ( $menu as $item ) {
+            if ( isset( $item[2] ) && 'ttrp-plugins' === $item[2] ) return;
+        }
+    }
+    if ( ! function_exists( 'ttrp_brand_dashboard' ) ) {
+        function ttrp_brand_dashboard(): void {
+            global $submenu;
+            $target = null;
+            if ( ! empty( $submenu['ttrp-plugins'] ) ) {
+                foreach ( $submenu['ttrp-plugins'] as $item ) {
+                    if ( $item[2] !== 'ttrp-plugins' ) { $target = $item[2]; break; }
+                }
+            }
+            if ( $target ) {
+                $url = esc_url( admin_url( 'admin.php?page=' . $target ) );
+                echo '<meta http-equiv="refresh" content="0;url=' . $url . '">';
+                echo '<script>window.location.replace("' . $url . '");</script>';
+            }
+        }
+    }
+    $svg_path = plugin_dir_path( __FILE__ ) . 'assets/ttrp-logo.svg';
+    $icon = file_exists( $svg_path )
+        ? 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( $svg_path ) )
+        : 'dashicons-admin-plugins';
+    add_menu_page( 'ttrp.gr Plugins', 'ttrp.gr Plugins', 'manage_options', 'ttrp-plugins', 'ttrp_brand_dashboard', $icon, 56 );
+    add_action( 'admin_menu', function () { remove_submenu_page( 'ttrp-plugins', 'ttrp-plugins' ); }, 999 );
+}
+function ttrp_ds_add_submenu(): void {
+    add_submenu_page( 'ttrp-plugins', 'Dimensional Shipping', 'Dimensional Shipping', 'manage_options', 'ttrp-dimensional-shipping', '__return_null' );
+}
+function ttrp_ds_redirect(): void {
+    if ( isset( $_GET['page'] ) && 'ttrp-dimensional-shipping' === $_GET['page'] ) {
+        wp_safe_redirect( admin_url( 'admin.php?page=wc-settings&tab=shipping' ) );
+        exit;
+    }
+}
+add_action( 'admin_menu', 'ttrp_ds_maybe_register_brand_menu', 5 );
+add_action( 'admin_menu', 'ttrp_ds_add_submenu' );
+add_action( 'admin_init',  'ttrp_ds_redirect' );
 
 require_once plugin_dir_path( __FILE__ ) . 'update-checker.php';
 new TTRP_Update_Checker( __FILE__, 'woo-tet-dimensional-shipping-plugin' );

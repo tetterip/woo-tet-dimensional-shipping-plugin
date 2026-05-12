@@ -14,6 +14,8 @@ A WooCommerce shipping method that calculates shipping cost based on product vol
 2. Activate the plugin through **Plugins → Installed Plugins**.
 3. Go to **WooCommerce → Settings → Shipping**, add or edit a shipping zone, and click **Add shipping method → Dimensional Shipping**.
 
+> **Shortcut:** After activation the shipping settings are also accessible via **ttrp.gr Plugins → Dimensional Shipping** in the WordPress admin sidebar.
+
 ## Configuration
 
 Each shipping zone instance exposes four settings:

@@ -8,6 +8,9 @@ Single-file WooCommerce shipping plugin. Calculates shipping cost from product v
 
 ```
 dimensional-shipping-plugin.php   # Entire plugin — one file
+update-checker.php                # Auto-updater (polls plugins.ttrp.gr)
+assets/
+  ttrp-logo.svg                   # Admin menu icon
 CHANGELOG.md
 README.md
 .gitignore
@@ -39,6 +42,10 @@ Always update `Version:` in the plugin header **and** `CHANGELOG.md` together.
 | WordPress | 5.0+ |
 | WooCommerce | 3.0+ |
 | WC tested up to | keep in sync with latest stable WC |
+
+## Admin menu
+
+The plugin registers a **ttrp.gr Plugins → Dimensional Shipping** entry via `ttrp_ds_maybe_register_brand_menu()` / `ttrp_ds_add_submenu()` / `ttrp_ds_redirect()` at the bottom of the main file. Clicking the submenu redirects (via `admin_init`) to **WooCommerce → Settings → Shipping**. The top-level menu is shared across all ttrp.gr plugins — guarded by a `global $menu` check so only the first active plugin registers it.
 
 ## WooCommerce specifics
 
