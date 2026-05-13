@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Plugin Name:       Dimensional Shipping for WooCommerce
  * Plugin URI:        https://ttrp.gr
@@ -12,9 +12,10 @@
  * Domain Path:       /languages
  * Requires Plugins:  woocommerce
  * Requires at least: 5.0
+ * Tested up to:      6.9.4
  * Requires PHP:      7.4
  * WC requires at least: 3.0
- * WC tested up to:   9.5
+ * WC tested up to:   10.7.0
  */
 
 defined( 'ABSPATH' ) || exit;
