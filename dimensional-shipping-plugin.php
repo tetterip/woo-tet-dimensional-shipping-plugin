@@ -1,18 +1,23 @@
 <?php
 /**
- * Plugin Name: Dimensional Shipping for WooCommerce
- * Description: Custom shipping method that calculates shipping cost based on product dimensions (L×W×H)/5000 in cm
- * Version: 1.3.0
- * Author: Michalis Tetteris
- * Author URI: https://ttrp.gr
- * Text Domain: dimensional-shipping
- * WC requires at least: 3.0.0
- * WC tested up to: 9.5.0
+ * Plugin Name:       Dimensional Shipping for WooCommerce
+ * Plugin URI:        https://ttrp.gr
+ * Description:       Custom shipping method that calculates shipping cost based on product dimensions (L×W×H)/5000 in cm.
+ * Version:           1.3.0
+ * Author:            Michalis Tetteris
+ * Author URI:        https://ttrp.gr
+ * License:           GPL-2.0+
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       dimensional-shipping
+ * Domain Path:       /languages
+ * Requires Plugins:  woocommerce
+ * Requires at least: 5.0
+ * Requires PHP:      7.4
+ * WC requires at least: 3.0
+ * WC tested up to:   9.5
  */
 
-if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly
-}
+defined( 'ABSPATH' ) || exit;
 
 add_action('before_woocommerce_init', function() {
     if (class_exists('\Automattic\WooCommerce\Utilities\FeaturesUtil')) {
