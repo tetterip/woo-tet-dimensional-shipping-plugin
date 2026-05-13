@@ -2,7 +2,7 @@
 
 ## Project overview
 
-Single-file WooCommerce shipping plugin. Calculates shipping cost from product volumetric weight: `(L × W × H) / 5000 × multiplier`, with a configurable minimum cost floor. No build step, no dependencies beyond WooCommerce.
+Single-file WooCommerce shipping plugin. Calculates shipping cost from product volumetric weight: `(L × W × H) / dim_factor × multiplier`, with a configurable minimum cost floor. The DIM factor, calculation unit (mm/cm/m/in/yd), multiplier, and minimum cost are all per-zone-instance settings. No build step, no dependencies beyond WooCommerce.
 
 ## File structure
 
@@ -11,6 +11,10 @@ dimensional-shipping-plugin.php   # Entire plugin — one file
 update-checker.php                # Auto-updater (polls plugins.ttrp.gr)
 assets/
   ttrp-logo.svg                   # Admin menu icon
+languages/
+  dimensional-shipping.pot        # Translation template (update after string changes)
+  dimensional-shipping-el.po      # Greek translation source
+  dimensional-shipping-el.mo      # Greek translation binary (compiled from .po)
 CHANGELOG.md
 README.md
 .gitignore
@@ -51,7 +55,14 @@ The plugin registers a **ttrp.gr Plugins → Dimensional Shipping** entry via `t
 
 - The shipping method class lives inside `dimensional_shipping_init()` to ensure `WC_Shipping_Method` is loaded first.
 - HPOS compatibility is declared via `FeaturesUtil::declare_compatibility('custom_order_tables')` — keep this whenever touching the plugin header.
-- Use `wc_get_dimension($value, 'cm')` for unit conversion; the store unit is the implicit source.
+- Dimensions are converted via `wc_get_dimension($value, $dim_unit)` where `$dim_unit` is the admin-selected DIM calculation unit, not always `'cm'`. The store unit is the implicit source; `wc_get_dimension` reads `woocommerce_dimension_unit` internally.
+
+## Multilingual
+
+- Translations live in `languages/`. The text domain is `dimensional-shipping`.
+- `load_plugin_textdomain()` is called on `plugins_loaded`.
+- After adding or changing any translatable string: update the `.pot` file and recompile any bundled `.po` files to `.mo`. Use `wp i18n make-pot` (WP-CLI) or the Node compile script pattern used when the Greek translation was created.
+- The `.mo` is a compiled binary — always commit both the `.po` source and the `.mo` together.
 
 ## Commit style
 

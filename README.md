@@ -1,6 +1,6 @@
 # Dimensional Shipping for WooCommerce
 
-A WooCommerce shipping method that calculates shipping cost based on product volumetric weight using the formula **(L × W × H) / 5000** (dimensions in cm).
+A WooCommerce shipping method that calculates shipping cost from each product's volumetric weight using the formula **(L × W × H) / DIM factor × multiplier**. The DIM factor, calculation unit, cost multiplier, and minimum cost are all configurable per shipping zone.
 
 ## Requirements
 
@@ -18,25 +18,44 @@ A WooCommerce shipping method that calculates shipping cost based on product vol
 
 ## Configuration
 
-Each shipping zone instance exposes four settings:
+Each shipping zone instance exposes the following settings:
 
 | Setting | Description | Default |
 |---|---|---|
 | **Title** | Label shown to customers at checkout | `Dimensional Shipping` |
 | **Tax Status** | Whether the shipping cost is taxable | `Taxable` |
-| **Cost Multiplier** | Scales the dimensional value to a currency amount | `1` |
+| **DIM Calculation Unit** | The dimension unit your carrier uses for the DIM factor (mm, cm, m, in, yd) | `cm` |
+| **DIM Factor** | Divisor in the volumetric formula — match this to your carrier's published value | `5000` |
+| **Cost Multiplier** | Scales the dimensional weight to a currency amount | `1` |
 | **Minimum Cost** | Floor price applied when the calculated cost is lower | `0` |
 
 ### How cost is calculated
 
 ```
-dimensional_value = (length_cm × width_cm × height_cm) / 5000
-item_cost         = dimensional_value × quantity
-order_cost        = sum(item_cost for all shippable items) × multiplier
-final_cost        = max(order_cost, minimum_cost)
+dim_weight  = (length × width × height) / dim_factor   # dimensions in the selected unit
+item_cost   = dim_weight × quantity
+order_cost  = sum(item_cost for all shippable items) × multiplier
+final_cost  = max(order_cost, minimum_cost)
 ```
 
-Products with any dimension set to zero are excluded from the calculation. Dimensions are automatically converted from the store's unit to centimetres via `wc_get_dimension()`.
+Product dimensions are automatically converted from the store's configured unit to the **DIM Calculation Unit** via `wc_get_dimension()` before the formula runs. Products with any dimension set to zero are excluded.
+
+### Choosing the right DIM factor and unit
+
+| Carrier unit | Typical DIM factor |
+|---|---|
+| Centimeters (cm) | 5000 |
+| Inches (in) | 139 |
+
+Set **DIM Calculation Unit** to match your carrier, then enter the DIM factor they provide. The plugin handles the conversion from whatever unit your store is configured to use.
+
+## Languages
+
+The plugin is fully translatable. A POT template is included at `languages/dimensional-shipping.pot`. A Greek (`el`) translation is bundled. To add a new language:
+
+1. Copy `dimensional-shipping.pot` to `dimensional-shipping-{locale}.po` (e.g. `dimensional-shipping-de_DE.po`).
+2. Fill in the `msgstr` entries using [Poedit](https://poedit.net/) or any PO editor.
+3. Compile to `.mo` and place both files in the `languages/` folder.
 
 ## Changelog
 

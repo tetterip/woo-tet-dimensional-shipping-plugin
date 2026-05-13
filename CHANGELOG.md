@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.5.0] - 2026-05-13
+
+### Added
+- **DIM Calculation Unit** select — choose the unit (mm, cm, m, in, yd) that matches your carrier's DIM factor. Product dimensions are converted to this unit before the formula runs, so the DIM factor value is always correct regardless of what unit the store is configured to use.
+- **Multilingual support** — `load_plugin_textdomain()` loads translations from `languages/` on `plugins_loaded`. Translation template (`languages/dimensional-shipping.pot`) included for translators.
+- **Greek translation** (`el`) — full admin UI translation included; the shipping method title stays in English.
+
+### Changed
+- Store dimension info notice updated to explain that dimensions are converted to the selected DIM unit (not always cm).
+- DIM Factor description updated to reference the unit selector and clarify the cm/in examples.
+- `sprintf` placeholders in the store info notice changed from `%s` to `%1$s`/`%2$s` so translators can reorder them.
+
+---
+
+## [1.4.0] - 2026-05-13
+
+### Added
+- **DIM Factor** setting — the divisor in the `(L×W×H) / DIM` formula is now configurable per zone instance (default 5000). Common values: 5000 for cm/kg, 139 for in/lb.
+- **Store dimension unit notice** — the settings panel now displays the WooCommerce store dimension unit with a link to WooCommerce → Settings → General.
+- Descriptive help text displayed below every settings field (previously hidden behind tooltip icons).
+
+### Changed
+- Shipping method admin description updated to explain the full formula and all configurable fields.
+
+---
+
 ## [1.3.0] - 2026-05-12
 
 ### Added
