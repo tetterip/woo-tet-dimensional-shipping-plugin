@@ -1,5 +1,13 @@
 # Changelog
 
+
+## [1.5.1] - 2026-05-13
+
+### Fixed
+- Removed UTF-8 BOM from the main plugin file. The BOM was being output before the HTML document, causing a stray character to appear at the start of every page.
+
+---
+
 ## [1.5.0] - 2026-05-13
 
 ### Added

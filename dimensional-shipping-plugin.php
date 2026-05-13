@@ -1,9 +1,9 @@
-﻿<?php
+<?php
 /**
  * Plugin Name:       Dimensional Shipping for WooCommerce
  * Plugin URI:        https://ttrp.gr
  * Description:       Custom shipping method that calculates shipping cost based on product dimensions (L×W×H)/DIM factor.
- * Version:           1.5.0
+ * Version:           1.5.1
  * Author:            Michalis Tetteris
  * Author URI:        https://ttrp.gr
  * License:           GPL-2.0+
