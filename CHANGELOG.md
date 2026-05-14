@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.5.2] - 2026-05-14
+
+### Fixed
+- Load plugin textdomain on `init` instead of `plugins_loaded` to suppress the WordPress 6.7+ `_load_textdomain_just_in_time` notice.
+
+---
+
 ## [1.5.1] - 2026-05-13
 
 ### Fixed
@@ -12,7 +19,7 @@
 
 ### Added
 - **DIM Calculation Unit** select — choose the unit (mm, cm, m, in, yd) that matches your carrier's DIM factor. Product dimensions are converted to this unit before the formula runs, so the DIM factor value is always correct regardless of what unit the store is configured to use.
-- **Multilingual support** — `load_plugin_textdomain()` loads translations from `languages/` on `plugins_loaded`. Translation template (`languages/dimensional-shipping.pot`) included for translators.
+- **Multilingual support** — `load_plugin_textdomain()` loads translations from `languages/` on `init`. Translation template (`languages/dimensional-shipping.pot`) included for translators.
 - **Greek translation** (`el`) — full admin UI translation included; the shipping method title stays in English.
 
 ### Changed

@@ -60,7 +60,7 @@ The plugin registers a **ttrp.gr Plugins → Dimensional Shipping** entry via `t
 ## Multilingual
 
 - Translations live in `languages/`. The text domain is `dimensional-shipping`.
-- `load_plugin_textdomain()` is called on `plugins_loaded`.
+- `load_plugin_textdomain()` is called on `init`.
 - After adding or changing any translatable string: update the `.pot` file and recompile any bundled `.po` files to `.mo`. Use `wp i18n make-pot` (WP-CLI) or the Node compile script pattern used when the Greek translation was created.
 - The `.mo` is a compiled binary — always commit both the `.po` source and the `.mo` together.
 
