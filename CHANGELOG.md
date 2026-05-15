@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.5.3] - 2026-05-15
+
+### Fixed
+- Guard `$wp_filesystem` global before use in the update checker to prevent a fatal error if WordPress hasn't initialised the filesystem yet.
+
+---
+
 ## [1.5.2] - 2026-05-14
 
 ### Fixed

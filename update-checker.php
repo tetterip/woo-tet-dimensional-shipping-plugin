@@ -133,7 +133,11 @@ class TTRP_Update_Checker {
 
         if ( $source !== $expected ) {
             global $wp_filesystem;
-            if ( $wp_filesystem->move( $source, $expected ) ) {
+            if ( empty( $wp_filesystem ) ) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+                WP_Filesystem();
+            }
+            if ( $wp_filesystem && $wp_filesystem->move( $source, $expected ) ) {
                 return $expected;
             }
         }
