@@ -4,7 +4,7 @@ A WooCommerce shipping method that calculates shipping cost from each product's 
 
 ## Requirements
 
-- WordPress 5.0+ (6.7+ compatible — translation loading notice resolved)
+- WordPress 5.0+ (7.0 compatible)
 - WooCommerce 3.0+
 - PHP 7.4+
 

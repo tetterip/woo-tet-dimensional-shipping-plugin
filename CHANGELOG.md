@@ -1,10 +1,13 @@
 # Changelog
 
 
-## [1.5.3] - 2026-05-15
+## [1.5.3] - 2026-05-27
 
 ### Fixed
-- Guard `$wp_filesystem` global before use in the update checker to prevent a fatal error if WordPress hasn't initialised the filesystem yet.
+- Guard `$wp_filesystem` global before calling `move()` in the update checker's `fix_directory_name()` — call `WP_Filesystem()` if not already initialised to prevent a fatal error during plugin updates.
+
+### Changed
+- Tested up to WordPress 7.0.
 
 ---
 
