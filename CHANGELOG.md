@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.5.4] - 2026-09-25
+
+### Changed
+- `update-checker.php`: passes plugin icons and banners from the update server to WordPress, so the plugin gets its icon in **Dashboard → Updates** and the details modal.
+
+---
+
 ## [1.5.3] - 2026-05-27
 
 ### Fixed
