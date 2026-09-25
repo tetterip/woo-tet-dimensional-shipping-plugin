@@ -8,7 +8,7 @@ Single-file WooCommerce shipping plugin. Calculates shipping cost from product v
 
 ```
 dimensional-shipping-plugin.php   # Entire plugin — one file
-update-checker.php                # Auto-updater (polls plugins.ttrp.gr)
+ttrp-common/                      # Shared ttrp.gr library: updates + "All Plugins" page (synced from the update server repo; never edit)
 assets/
   ttrp-logo.svg                   # Admin menu icon
 languages/
