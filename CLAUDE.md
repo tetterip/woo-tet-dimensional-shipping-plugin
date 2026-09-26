@@ -71,3 +71,12 @@ Short imperative subject line, no period. Body optional. Example:
 ```
 Fix minimum cost not applied when multiplier is zero
 ```
+
+## Proposed features / backlog (review 2026-09-26)
+
+Proposals from a suite-wide review, **not yet approved or scheduled** — discuss with the user before implementing. Remove or tick items here as they ship.
+
+1. **Billable weight** — use max(actual weight, volumetric weight), as couriers bill.
+2. **Weight bands** — cost table by weight range instead of a flat multiplier.
+3. **Admin breakdown** of how a rate was calculated (debug view).
+- **Tests + CI (suite item S1)** — port the zero-dependency runner (`tests/run.php`, `tests/stubs.php`) and `.github/workflows/tests.yml` (PHP lint + tests on 7.4 / 8.1 / 8.2) from `woo-tet-acs-tracking`. Extract pure logic into testable functions first; aim for 10–20 tests on the decisions that matter.
