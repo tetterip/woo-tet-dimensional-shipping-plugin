@@ -19,7 +19,7 @@ jobs:
         run: |
           SLUG="woo-tet-dimensional-shipping-plugin"
           mkdir -p "build/$SLUG"
-          cp dimensional-shipping-plugin.php README.md CHANGELOG.md "build/$SLUG/"
+          cp dimensional-shipping-plugin.php README.md CHANGELOG.md LICENSE "build/$SLUG/"
           cp -r languages assets ttrp-common "build/$SLUG/"
           cd build
           zip -r "../$SLUG.zip" "$SLUG"

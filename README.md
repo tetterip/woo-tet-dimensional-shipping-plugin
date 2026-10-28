@@ -63,4 +63,4 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-GPLv2 or later.
+GPL-2.0-or-later — see [LICENSE](LICENSE).
