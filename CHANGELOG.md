@@ -6,6 +6,9 @@
 ### Fixed
 - Escape the redirect URL at output in the shared **ttrp.gr Plugins** menu page (reported by the health check).
 
+### Changed
+- Tested up to WordPress 7.1 and WooCommerce 11.2.
+
 ---
 
 ## [1.7.0] - 2026-11-09
