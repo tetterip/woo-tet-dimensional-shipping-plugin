@@ -26,7 +26,7 @@ msgid "Dimensional Shipping"
 msgstr ""
 
 #: dimensional-shipping-plugin.php:81
-msgid "Calculates shipping cost from each product's volume: (Length × Width × Height) ÷ DIM factor × multiplier. The DIM factor and cost multiplier are configurable per shipping zone. A minimum cost floor can also be set."
+msgid "Calculates shipping cost from each product's volume: (Length × Width × Height) ÷ DIM factor × multiplier. The DIM factor and cost multiplier are configurable per shipping zone. A minimum cost and an additional fee can also be set."
 msgstr ""
 
 #: dimensional-shipping-plugin.php:120
@@ -112,4 +112,102 @@ msgstr ""
 
 #: dimensional-shipping-plugin.php:186
 msgid "A cost floor applied after the calculation. If the calculated cost is lower than this value, this amount is charged instead. Set to 0 to disable."
+msgstr ""
+
+#: dimensional-shipping-plugin.php
+msgid "Additional Fee"
+msgstr ""
+
+#: dimensional-shipping-plugin.php
+msgid "A fixed amount added to every order after the minimum cost is applied, e.g. for packaging or handling. Set to 0 to disable."
+msgstr ""
+
+#: dimensional-shipping-plugin.php
+msgid "How the shipping cost is calculated"
+msgstr ""
+
+#. translators: %s: DIM calculation unit, e.g. cm
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "Each product's length, width and height are converted to the DIM calculation unit (<strong>%s</strong>)."
+msgstr ""
+
+#. translators: %s: DIM factor
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "Its dimensional weight is (Length &times; Width &times; Height) &divide; DIM factor (<strong>%s</strong>), times the quantity in the cart."
+msgstr ""
+
+#. translators: %s: cost multiplier
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "The dimensional weights of all products are added up and multiplied by the cost multiplier (<strong>%s</strong>)."
+msgstr ""
+
+#. translators: %s: minimum cost, formatted as a price
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "If the result is below the minimum cost (<strong>%s</strong>), the minimum cost is charged instead."
+msgstr ""
+
+#. translators: %s: additional fee, formatted as a price
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "The additional fee (<strong>%s</strong>) is added."
+msgstr ""
+
+#: dimensional-shipping-plugin.php
+msgid "Tax is added on top, because the tax status is Taxable."
+msgstr ""
+
+#: dimensional-shipping-plugin.php
+msgid "No tax is added, because the tax status is None."
+msgstr ""
+
+#: dimensional-shipping-plugin.php
+msgid "Products that are virtual or have no length, width or height count as 0. A cart with only such products is charged the minimum cost plus the additional fee."
+msgstr ""
+
+#: dimensional-shipping-plugin.php
+msgid "Example with the saved settings: one 40 × 30 × 20 cm box"
+msgstr ""
+
+#. translators: 1: length, 2: width, 3: height, 4: unit, 5: volume
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "%1$s &times; %2$s &times; %3$s %4$s = %5$s"
+msgstr ""
+
+#. translators: 1: volume, 2: DIM factor, 3: dimensional weight
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "%1$s &divide; %2$s = %3$s (dimensional weight)"
+msgstr ""
+
+#. translators: 1: dimensional weight, 2: cost multiplier, 3: calculated cost
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "%1$s &times; %2$s = %3$s"
+msgstr ""
+
+#. translators: %s: minimum cost, formatted as a price
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "Below the minimum cost, so %s is used"
+msgstr ""
+
+#. translators: 1: cost after the minimum, 2: additional fee, 3: shipping cost
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "%1$s + %2$s additional fee = <strong>%3$s</strong> shipping"
+msgstr ""
+
+#. translators: %s: shipping cost
+#, php-format
+#: dimensional-shipping-plugin.php
+msgid "Shipping: <strong>%s</strong>"
+msgstr ""
+
+#: dimensional-shipping-plugin.php
+msgid "The example uses the saved values: save your changes to update it."
 msgstr ""

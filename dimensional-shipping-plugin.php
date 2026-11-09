@@ -3,7 +3,7 @@
  * Plugin Name:       Dimensional Shipping for WooCommerce
  * Plugin URI:        https://ttrp.gr
  * Description:       Custom shipping method that calculates shipping cost based on product dimensions (L×W×H)/DIM factor.
- * Version:           1.6.0
+ * Version:           1.7.0
  * Author:            Michalis Tetteris
  * Author URI:        https://ttrp.gr
  * License:           GPL-2.0-or-later
@@ -72,6 +72,7 @@ function dimensional_shipping_init() {
             public $min_cost;
             public $dim_factor;
             public $dim_unit;
+            public $extra_fee;
 
             /**
              * Constructor
@@ -80,7 +81,7 @@ function dimensional_shipping_init() {
                 $this->id                 = 'dimensional_shipping';
                 $this->instance_id        = absint($instance_id);
                 $this->method_title       = __('Dimensional Shipping', 'dimensional-shipping');
-                $this->method_description = __('Calculates shipping cost from each product\'s volume: (Length × Width × Height) ÷ DIM factor × multiplier. The DIM factor and cost multiplier are configurable per shipping zone. A minimum cost floor can also be set.', 'dimensional-shipping');
+                $this->method_description = __('Calculates shipping cost from each product\'s volume: (Length × Width × Height) ÷ DIM factor × multiplier. The DIM factor and cost multiplier are configurable per shipping zone. A minimum cost and an additional fee can also be set.', 'dimensional-shipping');
                 
                 // Zone based support
                 $this->supports = array(
@@ -106,6 +107,7 @@ function dimensional_shipping_init() {
                 $this->dim_unit   = $this->get_option('dim_unit');
                 $this->multiplier = $this->get_option('multiplier');
                 $this->min_cost   = $this->get_option('min_cost');
+                $this->extra_fee  = $this->get_option('extra_fee');
                 
                 // Save settings
                 add_action('woocommerce_update_options_shipping_' . $this->id, array($this, 'process_admin_options'));
@@ -193,7 +195,142 @@ function dimensional_shipping_init() {
                             'min'  => '0',
                         ),
                     ),
+                    'extra_fee' => array(
+                        'title'       => __('Additional Fee', 'dimensional-shipping'),
+                        'type'        => 'number',
+                        'description' => __('A fixed amount added to every order after the minimum cost is applied, e.g. for packaging or handling. Set to 0 to disable.', 'dimensional-shipping'),
+                        'default'     => '0',
+                        'desc_tip'    => false,
+                        'custom_attributes' => array(
+                            'step' => '0.01',
+                            'min'  => '0',
+                        ),
+                    ),
+                    'explanation' => array(
+                        'title' => __('How the shipping cost is calculated', 'dimensional-shipping'),
+                        'type'  => 'ds_explanation',
+                    ),
                 );
+            }
+
+            /**
+             * Final cost from the summed dimensional weight: × multiplier, minimum cost floor, then the additional fee.
+             */
+            public static function compute_cost($total_dimensional_value, $multiplier, $min_cost, $extra_fee) {
+                $cost = $total_dimensional_value * $multiplier;
+
+                if ($cost < $min_cost) {
+                    $cost = $min_cost;
+                }
+
+                return $cost + max(0, $extra_fee);
+            }
+
+            /**
+             * Settings field: step-by-step explanation of the calculation, with a worked example from the saved settings.
+             */
+            public function generate_ds_explanation_html($key, $data) {
+                $dim_unit   = $this->get_option('dim_unit') ?: 'cm';
+                $dim_factor = max(1, floatval($this->get_option('dim_factor')));
+                $multiplier = floatval($this->get_option('multiplier'));
+                $min_cost   = floatval($this->get_option('min_cost'));
+                $extra_fee  = floatval($this->get_option('extra_fee'));
+                $taxable    = 'taxable' === $this->get_option('tax_status');
+
+                // Example parcel: 40 × 30 × 20 cm, converted to the DIM unit like a real product.
+                $l = wc_get_dimension(40, $dim_unit, 'cm');
+                $w = wc_get_dimension(30, $dim_unit, 'cm');
+                $h = wc_get_dimension(20, $dim_unit, 'cm');
+                $volume      = $l * $w * $h;
+                $dim_weight  = $volume / $dim_factor;
+                $calculated  = $dim_weight * $multiplier;
+                $after_floor = max($calculated, $min_cost);
+                $total       = self::compute_cost($dim_weight, $multiplier, $min_cost, $extra_fee);
+
+                // Whole numbers without decimals, small ones (e.g. volumes in m) with up to 4.
+                $num   = function ($n) {
+                    $decimals = 0;
+                    while ($decimals < 4 && round($n, $decimals) != round($n, 4)) {
+                        $decimals = 0 === $decimals ? 2 : $decimals + 1;
+                    }
+                    return esc_html(number_format_i18n($n, $decimals));
+                };
+                $price = function ($n) { return wp_kses_post(wc_price($n)); };
+                $unit  = esc_html($dim_unit);
+
+                ob_start();
+                ?>
+                </table>
+                <h3 class="wc-settings-sub-title" id="<?php echo esc_attr($this->get_field_key($key)); ?>"><?php echo wp_kses_post($data['title']); ?></h3>
+                <ol>
+                    <li><?php
+                        /* translators: %s: DIM calculation unit, e.g. cm */
+                        echo wp_kses_post(sprintf(__('Each product\'s length, width and height are converted to the DIM calculation unit (<strong>%s</strong>).', 'dimensional-shipping'), $unit));
+                    ?></li>
+                    <li><?php
+                        /* translators: %s: DIM factor */
+                        echo wp_kses_post(sprintf(__('Its dimensional weight is (Length &times; Width &times; Height) &divide; DIM factor (<strong>%s</strong>), times the quantity in the cart.', 'dimensional-shipping'), $num($dim_factor)));
+                    ?></li>
+                    <li><?php
+                        /* translators: %s: cost multiplier */
+                        echo wp_kses_post(sprintf(__('The dimensional weights of all products are added up and multiplied by the cost multiplier (<strong>%s</strong>).', 'dimensional-shipping'), $num($multiplier)));
+                    ?></li>
+                    <li><?php
+                        /* translators: %s: minimum cost, formatted as a price */
+                        echo wp_kses_post(sprintf(__('If the result is below the minimum cost (<strong>%s</strong>), the minimum cost is charged instead.', 'dimensional-shipping'), $price($min_cost)));
+                    ?></li>
+                    <li><?php
+                        /* translators: %s: additional fee, formatted as a price */
+                        echo wp_kses_post(sprintf(__('The additional fee (<strong>%s</strong>) is added.', 'dimensional-shipping'), $price($extra_fee)));
+                    ?></li>
+                    <li><?php
+                        echo esc_html($taxable
+                            ? __('Tax is added on top, because the tax status is Taxable.', 'dimensional-shipping')
+                            : __('No tax is added, because the tax status is None.', 'dimensional-shipping'));
+                    ?></li>
+                </ol>
+                <p><?php esc_html_e('Products that are virtual or have no length, width or height count as 0. A cart with only such products is charged the minimum cost plus the additional fee.', 'dimensional-shipping'); ?></p>
+                <p><strong><?php esc_html_e('Example with the saved settings: one 40 × 30 × 20 cm box', 'dimensional-shipping'); ?></strong></p>
+                <ol>
+                    <li><?php
+                        /* translators: 1: length, 2: width, 3: height, 4: unit, 5: volume */
+                        echo wp_kses_post(sprintf(__('%1$s &times; %2$s &times; %3$s %4$s = %5$s', 'dimensional-shipping'), $num($l), $num($w), $num($h), $unit, $num($volume)));
+                    ?></li>
+                    <li><?php
+                        /* translators: 1: volume, 2: DIM factor, 3: dimensional weight */
+                        echo wp_kses_post(sprintf(__('%1$s &divide; %2$s = %3$s (dimensional weight)', 'dimensional-shipping'), $num($volume), $num($dim_factor), $num($dim_weight)));
+                    ?></li>
+                    <li><?php
+                        /* translators: 1: dimensional weight, 2: cost multiplier, 3: calculated cost */
+                        echo wp_kses_post(sprintf(__('%1$s &times; %2$s = %3$s', 'dimensional-shipping'), $num($dim_weight), $num($multiplier), $price($calculated)));
+                    ?></li>
+                    <?php if ($calculated < $min_cost) : ?>
+                    <li><?php
+                        /* translators: %s: minimum cost, formatted as a price */
+                        echo wp_kses_post(sprintf(__('Below the minimum cost, so %s is used', 'dimensional-shipping'), $price($min_cost)));
+                    ?></li>
+                    <?php endif; ?>
+                    <li><?php
+                        if ($extra_fee > 0) {
+                            /* translators: 1: cost after the minimum, 2: additional fee, 3: shipping cost */
+                            echo wp_kses_post(sprintf(__('%1$s + %2$s additional fee = <strong>%3$s</strong> shipping', 'dimensional-shipping'), $price($after_floor), $price($extra_fee), $price($total)));
+                        } else {
+                            /* translators: %s: shipping cost */
+                            echo wp_kses_post(sprintf(__('Shipping: <strong>%s</strong>', 'dimensional-shipping'), $price($total)));
+                        }
+                    ?></li>
+                </ol>
+                <p class="description"><?php esc_html_e('The example uses the saved values: save your changes to update it.', 'dimensional-shipping'); ?></p>
+                <table class="form-table">
+                <?php
+                return ob_get_clean();
+            }
+
+            /**
+             * The explanation is display-only: store nothing for it.
+             */
+            public function validate_ds_explanation_field($key, $value) {
+                return '';
             }
             
             /**
@@ -227,13 +364,8 @@ function dimensional_shipping_init() {
                     }
                 }
                 
-                // Calculate cost
-                $cost = $total_dimensional_value * $multiplier;
-                
-                // Apply minimum cost
-                if ($cost < $min_cost) {
-                    $cost = $min_cost;
-                }
+                // Multiplier, minimum cost, additional fee
+                $cost = self::compute_cost($total_dimensional_value, $multiplier, $min_cost, floatval($this->extra_fee));
                 
                 // Register rate
                 $this->add_rate(array(

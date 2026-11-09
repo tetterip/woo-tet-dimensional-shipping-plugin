@@ -1,6 +1,6 @@
 # Dimensional Shipping for WooCommerce
 
-A WooCommerce shipping method that calculates shipping cost from each product's volumetric weight using the formula **(L × W × H) / DIM factor × multiplier**. The DIM factor, calculation unit, cost multiplier, and minimum cost are all configurable per shipping zone.
+A WooCommerce shipping method that calculates shipping cost from each product's volumetric weight using the formula **(L × W × H) / DIM factor × multiplier**. The DIM factor, calculation unit, cost multiplier, minimum cost and an additional fee are all configurable per shipping zone.
 
 ## Requirements
 
@@ -28,6 +28,7 @@ Each shipping zone instance exposes the following settings:
 | **DIM Factor** | Divisor in the volumetric formula — match this to your carrier's published value | `5000` |
 | **Cost Multiplier** | Scales the dimensional weight to a currency amount | `1` |
 | **Minimum Cost** | Floor price applied when the calculated cost is lower | `0` |
+| **Additional Fee** | Fixed amount added to every order after the minimum cost (e.g. packaging or handling) | `0` |
 
 ### How cost is calculated
 
@@ -35,8 +36,10 @@ Each shipping zone instance exposes the following settings:
 dim_weight  = (length × width × height) / dim_factor   # dimensions in the selected unit
 item_cost   = dim_weight × quantity
 order_cost  = sum(item_cost for all shippable items) × multiplier
-final_cost  = max(order_cost, minimum_cost)
+final_cost  = max(order_cost, minimum_cost) + additional_fee
 ```
+
+The settings screen also shows these steps with your own values and a worked example (one 40 × 30 × 20 cm box), updated each time you save.
 
 Product dimensions are automatically converted from the store's configured unit to the **DIM Calculation Unit** via `wc_get_dimension()` before the formula runs. Products with any dimension set to zero are excluded.
 
