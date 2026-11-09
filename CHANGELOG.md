@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.7.3] - 2026-11-09
+
+### Fixed
+- **ttrp.gr Plugins → All Plugins** showed a critical error when another ttrp.gr plugin with an older shared library was loaded first (shared ttrp-common library 1.1.1).
+
+---
+
 ## [1.7.2] - 2026-11-09
 
 ### Changed
