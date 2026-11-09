@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.7.2] - 2026-11-09
+
+### Changed
+- Release workflow: `actions/checkout` v7 and `softprops/action-gh-release` v3 (Node 24). No changes to the plugin itself.
+
+---
+
 ## [1.7.1] - 2026-11-09
 
 ### Fixed
