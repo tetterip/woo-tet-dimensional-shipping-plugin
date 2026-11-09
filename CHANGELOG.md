@@ -8,6 +8,7 @@
 
 ### Changed
 - Tested up to WordPress 7.1 and WooCommerce 11.2.
+- Shared ttrp-common library 1.1.0: a one-time admin notice on what update checks send to plugins.ttrp.gr, a "Data and privacy" box on **ttrp.gr Plugins → All Plugins**, and a suggested paragraph for the WordPress privacy policy guide.
 
 ---
 
