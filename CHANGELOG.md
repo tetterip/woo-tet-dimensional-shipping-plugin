@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.7.0] - 2026-11-09
+
+### Added
+- **Additional Fee** setting: a fixed amount added to every order after the minimum cost (e.g. packaging or handling). Defaults to 0, so existing zones charge the same as before.
+- **How the shipping cost is calculated** section in the method's settings: the steps of the calculation with the zone's own values, and a worked example for a 40 × 30 × 20 cm box. Greek translation included.
+
+---
+
 ## [1.6.0] - 2026-09-25
 
 ### Added
