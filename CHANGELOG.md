@@ -1,6 +1,24 @@
 # Changelog
 
 
+## [1.7.2] - 2026-11-09
+
+### Changed
+- Release workflow: `actions/checkout` v7 and `softprops/action-gh-release` v3 (Node 24). No changes to the plugin itself.
+
+---
+
+## [1.7.1] - 2026-11-09
+
+### Fixed
+- Escape the redirect URL at output in the shared **ttrp.gr Plugins** menu page (reported by the health check).
+
+### Changed
+- Tested up to WordPress 7.1 and WooCommerce 11.2.
+- Shared ttrp-common library 1.1.0: a one-time admin notice on what update checks send to plugins.ttrp.gr, a "Data and privacy" box on **ttrp.gr Plugins → All Plugins**, and a suggested paragraph for the WordPress privacy policy guide.
+
+---
+
 ## [1.7.0] - 2026-11-09
 
 ### Added
