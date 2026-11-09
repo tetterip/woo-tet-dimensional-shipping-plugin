@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.7.1] - 2026-11-09
+
+### Fixed
+- Escape the redirect URL at output in the shared **ttrp.gr Plugins** menu page (reported by the health check).
+
+---
+
 ## [1.7.0] - 2026-11-09
 
 ### Added
