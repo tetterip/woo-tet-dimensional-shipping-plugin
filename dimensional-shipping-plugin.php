@@ -3,7 +3,7 @@
  * Plugin Name:       Dimensional Shipping for WooCommerce
  * Plugin URI:        https://ttrp.gr
  * Description:       Custom shipping method that calculates shipping cost based on product dimensions (L×W×H)/DIM factor.
- * Version:           1.7.0
+ * Version:           1.7.1
  * Author:            Michalis Tetteris
  * Author URI:        https://ttrp.gr
  * License:           GPL-2.0-or-later
@@ -13,10 +13,10 @@
  * Domain Path:       /languages
  * Requires Plugins:  woocommerce
  * Requires at least: 5.0
- * Tested up to:      7.0
+ * Tested up to:      7.1
  * Requires PHP:      7.4
  * WC requires at least: 3.0
- * WC tested up to:   10.7.0
+ * WC tested up to:   11.2
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -419,9 +419,9 @@ function ttrp_ds_maybe_register_brand_menu(): void {
                 }
             }
             if ( $target ) {
-                $url = esc_url( admin_url( 'admin.php?page=' . $target ) );
-                echo '<meta http-equiv="refresh" content="0;url=' . $url . '">';
-                echo '<script>window.location.replace("' . $url . '");</script>';
+                $url = admin_url( 'admin.php?page=' . $target );
+                echo '<meta http-equiv="refresh" content="0;url=' . esc_url( $url ) . '">';
+                echo '<script>window.location.replace("' . esc_js( esc_url_raw( $url ) ) . '");</script>';
             }
         }
     }
@@ -436,6 +436,7 @@ function ttrp_ds_add_submenu(): void {
     add_submenu_page( 'ttrp-plugins', 'Dimensional Shipping', 'Dimensional Shipping', 'manage_options', 'ttrp-dimensional-shipping', '__return_null' );
 }
 function ttrp_ds_redirect(): void {
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only menu redirect, compared to a fixed slug.
     if ( isset( $_GET['page'] ) && 'ttrp-dimensional-shipping' === $_GET['page'] ) {
         wp_safe_redirect( admin_url( 'admin.php?page=wc-settings&tab=shipping' ) );
         exit;
