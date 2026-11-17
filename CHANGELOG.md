@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.7.4] - 2026-11-17
+
+### Changed
+- Tested up to WooCommerce 11.3 (no changes needed: none of the APIs this plugin uses changed in WooCommerce 11.3).
+
+---
+
 ## [1.7.3] - 2026-11-09
 
 ### Fixed
